@@ -1,53 +1,78 @@
-import { Text, SafeAreaView, StyleSheet, FlatList,Image,TouchableOpacity} from 'react-native';
+import { Text, SafeAreaView, StyleSheet, FlatList,Image,TouchableOpacity,Picker} from 'react-native';
  import {useState} from 'react'
+
+
 export default function Products(props) {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState(null);
     const products=[
         {
             id:1,
             categoria:"Celular",
             imagem:<Image style={styles.img} source={require('../assets/iphone.webp')}/>,
             title:'Apple iPhone 15 Pro Max (512 GB) — Titânio Azul \n',
-            price:"999,99$",
+            price:99.99,
         },
         {
             id:2,
             categoria:"Celular",
             imagem:<Image style={styles.img} source={require('../assets/iphone.webp')}/>,
             title:'Apple iPhone 15 Pro Max (512 GB) — Titânio Azul \n',
-            price:"999,99$",
+            price:999.99,
         },
         {
             id:3,
-            categoria:"Celular",
+            categoria:"Roupa",
             imagem:<Image style={styles.img} source={require('../assets/iphone.webp')}/>,
             title:'Apple iPhone 15 Pro Max (512 GB) — Titânio Azul \n',
-            price:"999,99$",
+            price:999.99,
         },
         {
             id:4,
-            categoria:"Celular",
+            categoria:"Computador",
             imagem:<Image style={styles.img} source={require('../assets/iphone.webp')}/>,
             title:'Apple iPhone 15 Pro Max (512 GB) — Titânio Azul \n',
-            price:"999,99$",
+            price:999.99,
         }
     ]
     function filter (categoria){
+    
       setSelectedCategory(categoria)
     }
-    const filteredProducts = selectedCategory ? products.filter(p => p.categoria === selectedCategory) : products;
+    function clear (limpar){
+    
+      setSelectedCategory(limpar)
+      setSelectedPrice(limpar)
+    }
+
+    const filteredProducts = selectedCategory&&selectedPrice ? products.filter(p => p.categoria == selectedCategory&&p.price<selectedPrice) : selectedPrice  ? products.filter(p => p.price <= selectedPrice) : selectedCategory  ? products.filter(p => p.categoria == selectedCategory):products ;
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.paragraph}>
-      <TouchableOpacity onPress={()=>filter("Celular")}>
-        <Text>celulares</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={()=>filter("Computador")}>
-        <Text>Computadores</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={()=>filter("Roupa")}>
-        <Text>Roupas</Text>
-      </TouchableOpacity>
+     
+      <FlatList
+          data={props.categoria}
+          renderItem={({ item }) => <TouchableOpacity onPress={()=>filter(item)}>
+          <Text>{item}</Text>
+        </TouchableOpacity>}
+          horizontal={true}
+        />
+        <TouchableOpacity onPress={()=>clear(null)}>
+          <Text>Limpar</Text>
+        </TouchableOpacity>
+        <Picker 
+         selectedValue={selectedPrice}
+         onValueChange={(itemValue, itemIndex) =>{setSelectedPrice(itemValue)
+           }}
+          
+          >
+          {props.prices.map((element,index)=>{
+            return(
+ <Picker.Item key={index} label={element.rotulo}  value={element.value}/>
+            )
+          })}
+        
+      </Picker>
         <FlatList
           data={filteredProducts}
           renderItem={({ item }) => <SafeAreaView  style={styles.Produtos}><Text>{[item.imagem,]}</Text><Text style={styles.text}>{[item.title,item.price]}</Text></SafeAreaView>}
@@ -92,5 +117,9 @@ const styles = StyleSheet.create({
   text:{
     marginLeft:150,
     width:200
+  },
+  list:{
+    width:250,
+    height:250
   }
 });

@@ -20,7 +20,10 @@ export default function App() {
       <StatusBar />
     </SafeAreaView>
     <View>
-        <Products/>
+        <Products
+        categoria={['Celular','Computador','Roupa']}
+        prices={[{rotulo:"Até 100$",value:100},{rotulo:"Até 1000$",value:1000}]}
+        />
       </View>
     </SafeAreaView>
 
