@@ -1,8 +1,9 @@
-import { Text, SafeAreaView, StyleSheet, FlatList} from 'react-native';
+import { Text, SafeAreaView, StyleSheet, FlatList,TouchableOpacity} from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
+import { useNavigation } from '@react-navigation/native';
 export default function Header(props) {
+  const navigation=useNavigation()
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.paragraph}>
@@ -12,9 +13,9 @@ export default function Header(props) {
           horizontal={true}
           
         />
-       <Entypo name="shopping-cart" size={24} color="black" style={styles.paragraph}/>
-       <Entypo name="magnifying-glass" size={24} color="black" style={styles.paragraph}/>
-       <FontAwesome name="user-circle" size={24} color="black" style={styles.paragraph} />
+    <TouchableOpacity onPress={()=>navigation.navigate('Cart')}>  <Entypo name="shopping-cart" size={24} color="black" style={styles.paragraph}/></TouchableOpacity> 
+    <TouchableOpacity>   <Entypo name="magnifying-glass" size={24} color="black" style={styles.paragraph}/></TouchableOpacity>
+     <TouchableOpacity>  <FontAwesome name="user-circle" size={24} color="black" style={styles.paragraph} /></TouchableOpacity>
       </Text>
     </SafeAreaView>
   );

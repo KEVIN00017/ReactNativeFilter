@@ -1,10 +1,12 @@
-import { Text, SafeAreaView, StyleSheet, FlatList,Image,TouchableOpacity,Picker} from 'react-native';
- import {useState} from 'react'
+import { Text, SafeAreaView, StyleSheet, FlatList,Image,TouchableOpacity,Picker,Button} from 'react-native';
+ import {useContext, useState} from 'react'
 
+import { CartContext } from '../contexts/CartProvider.js';
 
 export default function Products(props) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState(null);
+  const [Produt,SetProdut]=useContext(CartContext)
     const products=[
         {
             id:1,
@@ -44,7 +46,11 @@ export default function Products(props) {
       setSelectedCategory(limpar)
       setSelectedPrice(limpar)
     }
-
+   
+    function carrinho(item){
+     SetProdut((prev)=>[...prev,item])
+      console.log(Produt)
+    }
     const filteredProducts = selectedCategory&&selectedPrice ? products.filter(p => p.categoria == selectedCategory&&p.price<selectedPrice) : selectedPrice  ? products.filter(p => p.price <= selectedPrice) : selectedCategory  ? products.filter(p => p.categoria == selectedCategory):products ;
   return (
     <SafeAreaView style={styles.container}>
@@ -75,7 +81,10 @@ export default function Products(props) {
       </Picker>
         <FlatList
           data={filteredProducts}
-          renderItem={({ item }) => <SafeAreaView  style={styles.Produtos}><Text>{[item.imagem,]}</Text><Text style={styles.text}>{[item.title,item.price]}</Text></SafeAreaView>}
+          renderItem={({ item }) => <SafeAreaView  style={styles.Produtos}><Text>{[item.imagem,]}</Text><Text style={styles.text}>{[item.title,item.price]}<Button
+          title="Cart" 
+          onPress={()=>carrinho(item)}
+          /></Text></SafeAreaView>}
           horizontal={true}
         />
       </Text>

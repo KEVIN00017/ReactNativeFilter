@@ -1,62 +1,22 @@
-import { Text, SafeAreaView, StyleSheet,View,Image } from 'react-native';
-import { StatusBar } from 'react-native';
-import Header from './components/Header.js';
-import Products from './components/Products.js';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Home from "./pages/index.js";
+import Cart from "./pages/cart.js";
+import CartProvider from "./contexts/CartProvider.js";
+import Main from "./pages/main.js";
+const Stack=createStackNavigator();
 
- 
-export default function App() {
- 
- 
-  return (
-    <SafeAreaView>
-    <SafeAreaView style={styles.container}>    
-      <View style={styles.header}>
-      <Header
-      style={styles.abs}
-        links={['Home','Itens','Profile']}
-      />
-
-      </View>
-      <StatusBar />
-    </SafeAreaView>
-    <View>
-        <Products
-        categoria={['Celular','Computador','Roupa']}
-        prices={[{rotulo:"Até 100$",value:100},{rotulo:"Até 1000$",value:1000}]}
-        />
-      </View>
-    </SafeAreaView>
-
-  );
+function App(){
+    return(
+        <NavigationContainer>
+            <CartProvider>
+           <Stack.Navigator initialRouteName="Home">
+                <Stack.Screen name="Home" component={Home}/>
+                <Stack.Screen name="Cart" component={Cart}/>
+                <Stack.Screen name="eae" component={Main}/>
+           </Stack.Navigator>
+           </CartProvider>
+        </NavigationContainer>
+    )
 }
- 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 0,
-    marginLeft:50
- 
-  },
-  header: {
-    display: 'flex',
-    alignSelf: 'start',
-    marginBottom:100
-  },
- Paragraph:{
-  marginLeft:30
- },
-  img:{
-    width:150,
-    height:150,
-    borderRadius:50
-  },
-  abs:{
-    position:'absolute'
-  },
-  Produtos:{
-    marginBottom:300,
-    
-  }
-});
- 
+export default App
